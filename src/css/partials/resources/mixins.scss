@@ -22,21 +22,31 @@
 @mixin gridTempColsRows($modules) {
 	@if($modules == 12 ) {
 		/* 12cols and 12rows*/
+		display: grid;
 		grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [col-7] 1fr [col-8] 1fr [col-9] 1fr [col-10] 1fr [col-11] 1fr [col-12] 1fr [col-13];
 
 		grid-template-rows: [row-1] 1fr [row-2] 1fr [row-3] 1fr [row-4] 1fr [row-5] 1fr [row-6] 1fr [row-7] 1fr [row-8] 1fr [row-9] 1fr [row-10] 1fr [row-11] 1fr [row-12] 1fr [row-13];
 
 	} @else if ($modules == 8 ) {
 		/* 8 cols and 8 rows */
+		display: grid;
 		grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [col-7] 1fr [col-8] 1fr [col-9];
 
 		grid-template-rows: [row-1] 1fr [row-2] 1fr [row-3] 1fr [row-4] 1fr [row-5] 1fr [row-6] 1fr [row-7] 1fr [row-8] 1fr [row-9];
 
 	} @else if ($modules == 6 ) {
 		/* 6 cols and 6 rows */
+		display: grid;
 		grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [col-7];
 
 		grid-template-rows: [row-1] 1fr [row-2] 1fr [row-3] 1fr [row-4] 1fr [row-5] 1fr [row-6] 1fr [row-7];
+
+	} @else if($modules == 5 ) {
+		/* 5 cols and 5 rows */
+		display: grid;
+		grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6];
+
+		grid-template-rows: [row-1] 1fr [row-2] 1fr [row-3] 1fr [row-4] 1fr [row-5] 1fr [row-6];
 	}
 }
 
@@ -47,9 +57,22 @@
 }
 
 /* for background properties */
-@mixin bgimg($url, $repeat, $positionX, $positionY, $size) {
+@mixin bgimg($url, $repeat, $positionX, $positionY, $size, $attachment:scroll) {
 	background-image: url($url);
 	background-repeat: $repeat;
 	background-position: $positionX $positionY;
 	background-size: $size;
+	background-attachment: $attachment;
+}
+
+/* flexbox mixin */
+@mixin flex($main, $cross) {
+	display: flex;
+	justify-content: $main;
+	align-items: $cross;
+}
+
+@mixin gridItemPosition($justify, $align) {
+	justify-self: $justify;
+	align-self: $align;
 }

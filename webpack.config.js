@@ -121,7 +121,7 @@ module.exports = {
 		// new webpack.HotModuleReplacementPlugin(),
 		// new webpack.NamedModulesPlugin(),
 		new HtmlWebpackPlugin({
-			title: 'To The Mars',
+			title: 'Foody Roof',
 			template: './src/index.html',
 			hash: false,
 			minify: {

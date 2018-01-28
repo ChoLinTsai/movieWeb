@@ -154,7 +154,7 @@ module.exports = {
 		// new webpack.HotModuleReplacementPlugin(),
 		// new webpack.NamedModulesPlugin(),
 		new HtmlWebpackPlugin({
-			title: 'Foody Roof',
+			title: 'Webpack Template',
 			template: './src/index.html',
 			hash: false,
 			minify: {

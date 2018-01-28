@@ -42,10 +42,12 @@ const cssConfig = isProd ? cssProd : cssDev;
 
 const bootstrapConfig = isProd ? bootstrapEntryPoints.prod : bootstrapEntryPoints.dev;
 
+
+
 module.exports = {
 	entry: {
-		app: './src/js/app.js',
-		bootstrap: bootstrapConfig
+  		app: './src/js/app.js',
+			bootstrap: bootstrapConfig
 	},
 	output: {
 		path: path.resolve(__dirname, "docs"),
@@ -86,28 +88,59 @@ module.exports = {
 					}
 				]
 			},
+			// {
+			// 	test: /\.(woff2?|svg)$/,
+			// 	loader: 'url-loader?limit=10000&name=fonts/[name].[ext]'
+			// },
+    	// {
+			// 	test: /\.(ttf|eot)$/,
+			// 	use: [
+			// 		{
+			// 			loader: 'file-loader',
+			// 			options: {
+			// 				name: '[name].[ext]',
+			// 				publicPath: '../',
+			// 				outputPath: 'fonts/'
+			// 			}
+			// 		}
+			// 	]
+			// 	// loader: 'file-loader?name=./fonts/[name].[ext]'
+			// },
 			{
-				test: /\.(woff2?|svg)$/,
-				loader: 'url-loader?limit=10000&name=fonts/[name].[ext]'
-			},
-    	{
-				test: /\.(ttf|eot)$/,
-				use: [
-					{
-						loader: 'file-loader',
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/font-woff',
+							name: '[name].[ext]',
+							publicPath: './',
+							outputPath: 'fonts/'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          { loader: 'file-loader',
 						options: {
 							name: '[name].[ext]',
 							publicPath: '../',
 							outputPath: 'fonts/'
 						}
 					}
-				]
-				// loader: 'file-loader?name=./fonts/[name].[ext]'
-			},
-			{
-				test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
+        ]
+      },
+			// {	 // for bootstrap 3
+			// 	test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
+			// 	loader: 'imports-loader?jQuery=jquery'
+			// },
+			{	 // for bootstrap 4
+				test: /bootstrap\/dist\/js\/umd\//,
 				loader: 'imports-loader?jQuery=jquery'
-			},
+			}
 		]
 	},
 	devServer: {
@@ -130,20 +163,30 @@ module.exports = {
 		}),
 		new ExtractTextPlugin({
 			filename: './css/[name].css',
-			disable: !isProd,
+			// disable: !isProd,
 			allChunks: true
 		}),
 		// new PurifyCSSPlugin({
     //   paths: glob.sync(path.join(__dirname, 'src/*.html')),
-    // })
-		// new webpack.ProvidePlugin({
-		// 	$: 'jquery',
-    //   jQuery: 'jquery',
-    //   'window.jQuery': 'jquery',
-    //   Popper: ['popper.js', 'default'],
-    //   Util: "exports-loader?Util!bootstrap/js/dist/util",
-    //   Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-		// 	Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-		// })
+    // }),
+		new webpack.ProvidePlugin({
+			$: "jquery",
+	    jQuery: "jquery",
+	    "window.jQuery": "jquery",
+	    Tether: "tether",
+	    "window.Tether": "tether",
+	    Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
+	    Button: "exports-loader?Button!bootstrap/js/dist/button",
+	    Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
+	    Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
+	    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+	    Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
+	    Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
+	    Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
+	    Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
+	    Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+	    Util: "exports-loader?Util!bootstrap/js/dist/util",
+			Popper: ['popper.js', 'default'],
+		})
 	]
 }

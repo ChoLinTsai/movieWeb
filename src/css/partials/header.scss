@@ -1,0 +1,43 @@
+header#header-carousel {
+	@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+	background: #333;
+	color: #fff;
+	div.carousel-inner {
+		figure#header-fig-1 {
+			@include bgimg(
+			'../img/header-fig-1.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+		figure#header-fig-2 {
+			@include bgimg(
+			'../img/header-fig-2.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+		figure#header-fig-3 {
+			@include bgimg(
+			'../img/header-fig-3.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+		figure#header-fig-4 {
+			@include bgimg(
+			'../img/header-fig-4.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+		figure#header-fig-5 {
+			@include bgimg(
+			'../img/header-fig-5.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+		figure#header-fig-6 {
+			@include bgimg(
+			'../img/header-fig-6.jpg',
+			no-repeat, center, top, cover);
+			@include wh(normal, $headerWidth-xl, $headerHeight-xl);
+		}
+	}
+}

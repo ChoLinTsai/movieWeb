@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require('webpack');
+const myEnv = require('dotenv').config();
 const path = require('path');
 const glob = require('glob');
 const PurifyCSSPlugin = require('purifycss-webpack');
@@ -166,6 +167,9 @@ module.exports = {
 			// disable: !isProd,
 			allChunks: true
 		}),
+		new webpack.DefinePlugin({
+    	myAPI: JSON.stringify(myEnv.parsed.myAPI),
+  	}),
 		// new PurifyCSSPlugin({
     //   paths: glob.sync(path.join(__dirname, 'src/*.html')),
     // }),

@@ -1,4 +1,5 @@
 @import '../bootstrap/customizations.scss';
+@import "./partials/resources/root.scss";
 @import "./partials/resources/fonts.scss";
 @import "./partials/resources/var.scss";
 
@@ -6,3 +7,6 @@
 
 /* Header section */
 @import "./partials/header.scss";
+
+/* Main section */
+@import "./partials/main.scss";

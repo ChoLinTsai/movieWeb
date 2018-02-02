@@ -21,22 +21,22 @@
 		<!-- Carousel imgs -->
 	  <div class="carousel-inner">
 	    <div class="carousel-item active">
-				<figure id="header-fig-1" class="d-block"></figure>
+				<figure id="header-fig-1" class="d-block header-figs"></figure>
 	    </div>
 	    <div class="carousel-item">
-	      <figure id="header-fig-2" class="d-block"></figure>
+	      <figure id="header-fig-2" class="d-block header-figs"></figure>
 	    </div>
 	    <div class="carousel-item">
-	      <figure id="header-fig-3" class="d-block"></figure>
+	      <figure id="header-fig-3" class="d-block header-figs"></figure>
 	    </div>
 			<div class="carousel-item">
-	      <figure id="header-fig-4" class="d-block"></figure>
+	      <figure id="header-fig-4" class="d-block header-figs"></figure>
 	    </div>
 			<div class="carousel-item">
-	      <figure id="header-fig-5" class="d-block"></figure>
+	      <figure id="header-fig-5" class="d-block header-figs"></figure>
 	    </div>
 			<div class="carousel-item">
-	      <figure id="header-fig-6" class="d-block"></figure>
+	      <figure id="header-fig-6" class="d-block header-figs"></figure>
 	    </div>
 	  </div>
 		<!-- Carousel controls -->
@@ -52,10 +52,11 @@
 	<!-- Main section -->
 	<main id="main-section">
 		<div class="container">
+
 			<div class="row">
 				<section class="card-deck">
 
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div id="first-card" class="card">
 							<img id="card-img-1" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -64,13 +65,13 @@
 									<p>Infinity War</p>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div id="second-card" class="card">
 							<img id="card-img-2" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -78,13 +79,17 @@
 									<h5 class="card-title">Black Panther</h5>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
 					</div>
+				</section>
+			</div>
 
-					<div class="col-md-6">
+			<div class="row">
+				<section class="card-deck">
+					<div class="col-lg-6">
 						<div id="third-card" class="card">
 							<img id="card-img-3" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -93,13 +98,13 @@
 									<p>Ragnarok</p>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div id="third-card" class="card">
 							<img id="card-img-4" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -107,13 +112,17 @@
 									<h5 class="card-title">Doctor Strange</h5>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
 					</div>
+				</section>
+			</div>
 
-					<div class="col-md-6">
+			<div class="row">
+				<section class="card-deck">
+					<div class="col-lg-6">
 						<div id="third-card" class="card">
 							<img id="card-img-5" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -122,13 +131,13 @@
 									<p>Homecoming</p>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div id="third-card" class="card">
 							<img id="card-img-6" class="card-img" src="" alt="">
 							<div class="inner-wrap">
@@ -137,7 +146,7 @@
 									<p>Civil War</p>
 								</div>
 								<div class="card-footer">
-									<button class="btn btn-lg btn-primary">Details</button>
+									<button class="btn btn-lg btn-primary btn-details" data-toggle="modal" data-target="#movieModal">Details</button>
 								</div>
 							</div>
 						</div>
@@ -145,8 +154,65 @@
 
 				</section>
 			</div>
+
 		</div>
 	</main>
+
+	<!-- Modal -->
+	<div class="modal fade" id="movieModal" tabindex="-1" role="dialog" aria-labelledby="movieModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="movieModalTitle"></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+					<div class="modalInnerWrap">
+						<img id="movieModalImg" src="">
+						<div class="innerContent">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Release Date</th>
+										<td id="release-date"></td>
+									</tr>
+									<tr>
+										<th>Status</th>
+										<td id="movie-status"></td>
+									</tr>
+									<tr>
+										<th>Budget</th>
+										<td id="movie-budget"></td>
+									</tr>
+									<tr>
+										<th>Revenue</th>
+										<td id="movie-revenue"></td>
+									</tr>
+									<tr>
+										<th>Rating</th>
+										<td id="movie-rating"></td>
+									</tr>
+									<tr>
+										<th>Votes</th>
+										<td id="movie-votes"></td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+
 	<button id="get-btn" class="btn btn-lg btn-primary">GET</button>
 	<button id="search-btn" class="btn btn-lg btn-primary">Search</button>
 	<button id="config-btn" class="btn btn-lg btn-primary">Config</button>

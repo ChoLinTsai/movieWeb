@@ -18,29 +18,30 @@ function $event(x, y, z, i) {
 }
 
 
+// array 0:avengers, 1:blackpather, 2:thor3
+// 3:doctor strange, 4:spiderman, 5:captain america
+const movieID = [299536, 284054, 284053, 284052, 315635, 271110];
+// get basic url and size
+const secureUrl = `https://api.themoviedb.org/3/`;
+const imgUrl = `https://image.tmdb.org/t/p/`;
+const imgSize = `w185`;
 $event(window, 'DOMContentLoaded', windowOnLoad, false)
 
 function windowOnLoad() {
-  // get basic url and size
-	let secureUrl = `https://api.themoviedb.org/3/`;
-	let imgUrl = `https://image.tmdb.org/t/p/`;
-	let imgSize = `w185`;
-	// array 0:avengers, 1:blackpather, 2:thor3
-	// 3:doctor strange, 4:spiderman, 5:captain america
-	let movieID = [299536, 284054, 284053, 284052, 315635, 271110];
 	let selectimg = $selectAll('.card-img');
-  // make node list into array;
+	// make node list into array;
 	let getImgList = [...selectimg];
 	let resultList = [];
-  // make 2 arrays into a 2-dimensional array
+	// make 2 arrays into a 2-dimensional array
 	for (let i = 0; i < movieID.length ; i++) {
 		resultList.push( [ movieID[i], getImgList[i] ] );
 	}
 
-  resultList.map( i => {
+  // get main section poster img
+	resultList.map( i => {
 			let [ x, y ] = i;
-			let xhr = new XMLHttpRequest();
 			let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
+			let xhr = new XMLHttpRequest();
 
 			xhr.open('GET', movieUrls, true);
 
@@ -57,6 +58,53 @@ function windowOnLoad() {
 		}
 	);
 }
+
+// get all details btns
+const detailsBtns = [...$selectAll('.btn-details')];
+const modalPosterSize = 'w185';
+
+// set function click
+detailsBtns.map( i => $event(i, 'click', checkindex))
+
+// get indexOf click detailsBtns and get all modal content
+function checkindex() {
+	let checkBtnIndex = detailsBtns.indexOf(this)
+	let getMovieID = movieID[checkBtnIndex];
+	let getMovieUrl = `${secureUrl}movie/${getMovieID}?api_key=${myAPI}`;
+	let xhr = new XMLHttpRequest();
+
+	xhr.open('GET', getMovieUrl, true);
+	xhr.onload = () => {
+		if (xhr.status === 200) {
+			let output = JSON.parse(xhr.responseText);
+			let MovieTitle = output.original_title;
+			let getPosterPath = output.poster_path;
+			let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
+			let setMillion = 1000000;
+			let setBillion = 1000000000;
+			let budgetDivide = output.budget > setBillion ? setBillion : setMillion;
+			let revenueDivide = output.revenue > setBillion ? setBillion : setMillion;
+			let budgetUnit = output.budget > setBillion ? `Billion(s)` : `Million(s)`
+			let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
+
+			$select('#movieModalImg').src = getModalPoster;
+			$select('#movieModalTitle').innerHTML = output.original_title;
+			$select('#release-date').innerHTML = output.release_date;
+			$select('#movie-status').innerHTML = output.status;
+
+			$select('#movie-budget').innerHTML = `${(output.budget/budgetDivide).toFixed(2)} ${budgetUnit}`;
+
+			$select('#movie-revenue').innerHTML = `${(output.revenue/revenueDivide).toFixed(2)} ${revenueUnit}`
+
+			$select('#movie-rating').innerHTML = output.vote_average;
+			$select('#movie-votes').innerHTML = output.vote_count;
+
+		}
+	}
+	xhr.send();
+}
+
+
 
 
 // for testing apikey

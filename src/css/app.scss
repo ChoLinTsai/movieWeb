@@ -7,6 +7,12 @@
 
 /* Header section */
 @import "./partials/header.scss";
+@import "./mq/mq_header.scss";
 
 /* Main section */
 @import "./partials/main.scss";
+
+
+
+/* Modal section */
+@import "./partials/modal.scss";

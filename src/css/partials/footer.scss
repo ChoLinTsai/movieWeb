@@ -1,0 +1,13 @@
+footer#footer-section {
+	@include wh(normal, 100vw, 50px);
+	background: #2C2E3E;
+	div.container {
+	@include wh(normal, 100vw, 100%);
+	@include flex(center, center);
+	 p {
+		 margin: 0;
+		 color: #EE2B47;
+		 letter-spacing: 2px;
+	 }
+	}
+}

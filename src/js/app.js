@@ -17,6 +17,15 @@ function $event(x, y, z, i) {
 	return x.addEventListener(y, z, i);
 }
 
+// make a 2d array
+function get2dArray(x, y) {
+	let resultArray = [];
+	for (let i = 0; i < x.length; i++) {
+		resultArray.push( [ x[i], y[i] ]);
+	}
+	return resultArray;
+}
+
 
 // array 0:avengers, 1:blackpather, 2:thor3
 // 3:doctor strange, 4:spiderman, 5:captain america
@@ -25,20 +34,42 @@ const movieID = [299536, 284054, 284053, 284052, 315635, 271110];
 const secureUrl = `https://api.themoviedb.org/3/`;
 const imgUrl = `https://image.tmdb.org/t/p/`;
 const imgSize = `w185`;
+
+// when page loaded call windowOnLoad right away
 $event(window, 'DOMContentLoaded', windowOnLoad, false)
 
+// when this function is called, it will get header and main section figs
 function windowOnLoad() {
-	let selectimg = $selectAll('.card-img');
-	// make node list into array;
-	let getImgList = [...selectimg];
-	let resultList = [];
-	// make 2 arrays into a 2-dimensional array
-	for (let i = 0; i < movieID.length ; i++) {
-		resultList.push( [ movieID[i], getImgList[i] ] );
-	}
+	// get .card-img elements and put them into array;
+	let getImgList = [...$selectAll('.card-img')];
+	let getHeaderFigs = [...$selectAll('.header-figs')];
+  // make movieID and getHeaderFigs into 2d array
+	let headerResultList = get2dArray(movieID, getHeaderFigs);
+  // make movieID and getImgList into 2d array
+	let mainResultList = get2dArray(movieID, getImgList);
 
-  // get main section poster img
-	resultList.map( i => {
+  // map through all 6 header carousels to get figs
+	headerResultList.map( i => {
+		let [ x, y ] = i;
+		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
+		let xhr = new XMLHttpRequest();
+
+		xhr.open('GET', movieUrls, true);
+
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				let movieOutputs = JSON.parse(this.responseText);
+				let getHeaderPath = `${imgUrl}original${movieOutputs.backdrop_path}`;
+				y.style.backgroundImage = `url('${getHeaderPath}')`;
+			}
+		}
+
+		xhr.send()
+	})
+
+
+  // get main section 6 poster imgs
+	mainResultList.map( i => {
 			let [ x, y ] = i;
 			let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 			let xhr = new XMLHttpRequest();
@@ -46,7 +77,7 @@ function windowOnLoad() {
 			xhr.open('GET', movieUrls, true);
 
 			xhr.onload = function() {
-				if (this.status === 200) {
+				if (xhr.status === 200) {
 					let movieOutputs = JSON.parse(this.responseText);
 					let getPath = movieOutputs.poster_path;
 					let getMovieUrls = `${imgUrl}${imgSize}${getPath}`
@@ -66,7 +97,7 @@ const modalPosterSize = 'w185';
 // set function click
 detailsBtns.map( i => $event(i, 'click', checkindex))
 
-// get indexOf click detailsBtns and get all modal content
+// get indexOf clicked detailsBtns and get all modal content
 function checkindex() {
 	let checkBtnIndex = detailsBtns.indexOf(this)
 	let getMovieID = movieID[checkBtnIndex];
@@ -77,7 +108,6 @@ function checkindex() {
 	xhr.onload = () => {
 		if (xhr.status === 200) {
 			let output = JSON.parse(xhr.responseText);
-			let MovieTitle = output.original_title;
 			let getPosterPath = output.poster_path;
 			let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
 			let setMillion = 1000000;
@@ -107,65 +137,65 @@ function checkindex() {
 
 
 
-// for testing apikey
-const btnGetApi = $select('#get-btn');
-const btnSearchApi = $select('#search-btn');
-const btnConfig = $select('#config-btn');
-
-$event(btnGetApi, 'click', getApi);
-$event(btnSearchApi, 'click', searchApi);
-$event(btnConfig, 'click', configApi);
-
-function configApi() {
-	const xhr = new XMLHttpRequest();
-	const secureURL = 'https://api.themoviedb.org/3/';
-	const myURL = `${secureURL}configuration?api_key=${myAPI}`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			console.log(output.images);
-		}
-	}
-
-	xhr.send()
-}
-
-function getApi() {
-	const xhr = new XMLHttpRequest();
-	const movieID = 284053;
-	const secureURL = 'https://api.themoviedb.org/3/';
-	const myURL = `${secureURL}movie/${movieID}?api_key=${myAPI}`;
-	const imgURL = `https://image.tmdb.org/t/p/`;
-	const imgSize = `w342`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			let outputImgURL = `${imgURL}${imgSize}${output.poster_path}`
-			console.log(outputImgURL);
-		}
-	}
-
-	xhr.send()
-}
-
-
-
-function searchApi() {
-	const xhr = new XMLHttpRequest();
-	const secureURL = `https://api.themoviedb.org/3/`
-	const myURL = `${secureURL}search/movie?api_key=${myAPI}&query=captain+america`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			console.log(output);
-		}
-	}
-
-	xhr.send()
-}
+// // for testing apikey
+// const btnGetApi = $select('#get-btn');
+// const btnSearchApi = $select('#search-btn');
+// const btnConfig = $select('#config-btn');
+//
+// // $event(btnGetApi, 'click', getApi);
+// // $event(btnSearchApi, 'click', searchApi);
+// // $event(btnConfig, 'click', configApi);
+//
+// function configApi() {
+// 	const xhr = new XMLHttpRequest();
+// 	const secureURL = 'https://api.themoviedb.org/3/';
+// 	const myURL = `${secureURL}configuration?api_key=${myAPI}`;
+//
+// 	xhr.open('GET', myURL, true);
+// 	xhr.onload = function() {
+// 		if (this.status === 200) {
+// 			let output = JSON.parse(this.responseText)
+// 			console.log(output.images);
+// 		}
+// 	}
+//
+// 	xhr.send()
+// }
+//
+// function getApi() {
+// 	let xhr = new XMLHttpRequest();
+// 	let movieID = 284053;
+// 	let secureURL = 'https://api.themoviedb.org/3/';
+// 	let myURL = `${secureURL}movie/${movieID}?api_key=${myAPI}`;
+// 	let imgURL = `https://image.tmdb.org/t/p/`;
+// 	let imgSize = `w342`;
+//
+// 	xhr.open('GET', myURL, true);
+// 	xhr.onload = function() {
+// 		if (this.status === 200) {
+// 			let output = JSON.parse(this.responseText)
+// 			let outputImgURL = `${imgURL}${imgSize}${output.poster_path}`
+// 			console.log(outputImgURL);
+// 		}
+// 	}
+//
+// 	xhr.send()
+// }
+//
+//
+//
+// function searchApi() {
+// 	const xhr = new XMLHttpRequest();
+// 	const secureURL = `https://api.themoviedb.org/3/`
+// 	const myURL = `${secureURL}search/movie?api_key=${myAPI}&query=captain+america`;
+//
+// 	xhr.open('GET', myURL, true);
+// 	xhr.onload = function() {
+// 		if (this.status === 200) {
+// 			let output = JSON.parse(this.responseText)
+// 			console.log(output);
+// 		}
+// 	}
+//
+// 	xhr.send()
+// }

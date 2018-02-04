@@ -11,8 +11,11 @@
 
 /* Main section */
 @import "./partials/main.scss";
-
-
+@import "./mq/mq_main.scss";
 
 /* Modal section */
 @import "./partials/modal.scss";
+@import "./mq/mq_modal.scss";
+
+/* Footer section */
+@import "./partials/footer.scss";

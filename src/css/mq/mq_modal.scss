@@ -1,0 +1,103 @@
+/* laptop xl or desktop */
+@media screen and (max-width: 1440px) {
+
+}
+
+/* laptop lg */
+@media screen and (max-width: 1200px) {
+
+}
+
+/* laptop lg */
+@media screen and (max-width: 992px) {
+	div#movieModal {
+		div.modal-dialog {
+			div.modal-content {
+				div.modal-header {
+					h5#movieModalTitle {
+						font-size: 1.75rem;
+						letter-spacing: 0.05rem;
+					}
+				}
+				div.modal-body {
+					div.modalInnerWrap {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						font-size: 1rem;
+						img#movieModalImg {
+							@include wh(normal, 185px, 294px);
+							border-radius: 5px;
+							margin-bottom: 1rem;
+						}
+						div.innerContent {
+							@include wh(normal, 100%, 100%);
+							flex:3;
+							margin-left: 1rem;
+							table.table {
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/* tablet */
+@media screen and (max-width: 768px) {
+
+}
+
+/* mobile lg */
+@media screen and (max-width: 576px) {
+	div#movieModal {
+		div.modal-dialog {
+			div.modal-content {
+				div.modal-header {
+					h5#movieModalTitle {
+						font-size: 1.25rem;
+						letter-spacing: 2px;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* mobile lg */
+@media screen and (max-width: 425px) {
+	div#movieModal {
+		div.modal-dialog {
+			div.modal-content {
+				div.modal-header {
+					h5#movieModalTitle {
+						font-size: 1.15rem;
+						letter-spacing: 1px;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* mobile md */
+@media screen and (max-width: 375px) {
+
+}
+
+/* mobile sm */
+@media screen and (max-width: 320px) {
+	div#movieModal {
+		div.modal-dialog {
+			div.modal-content {
+				div.modal-header {
+					h5#movieModalTitle {
+						font-size: 0.9rem;
+						letter-spacing: 1px;
+					}
+				}
+			}
+		}
+	}
+}

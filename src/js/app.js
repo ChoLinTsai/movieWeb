@@ -26,15 +26,24 @@ function get2dArray(x, y) {
 	return resultArray;
 }
 
+const wordtosearch = `steel`;
 
 // array 0:avengers, 1:blackpather, 2:thor3
 // 3:doctor strange, 4:spiderman, 5:captain america
-const movieID = [299536, 284054, 284053, 284052, 315635, 271110];
+const marvelMovieID = [299536, 284054, 284053, 284052, 315635, 271110];
+// DC array 0: justice league, 1: aquaman, 2: wonder woman
+// 3: BVS, 4:sucide squard 5: man of steel
+const dcmovieID = [141052, 297802, 297762, 209112, 297761, 49521];
+// get marvel or dc movieID 50/50 chance;
+const movieID = Math.random().toFixed(1) > 0.5 ? marvelMovieID : dcmovieID;
+
 // get basic url and size
 const secureUrl = `https://api.themoviedb.org/3/`;
 const imgUrl = `https://image.tmdb.org/t/p/`;
 const imgSize = `w185`;
 
+// get footer content el
+const footerContent = $select('#footer-content');
 // when page loaded call windowOnLoad right away
 $event(window, 'DOMContentLoaded', windowOnLoad, false)
 
@@ -43,10 +52,45 @@ function windowOnLoad() {
 	// get .card-img elements and put them into array;
 	let getImgList = [...$selectAll('.card-img')];
 	let getHeaderFigs = [...$selectAll('.header-figs')];
+  // get card title and put them into array
+	let getCardTitle = [...$selectAll('.card-title')]
   // make movieID and getHeaderFigs into 2d array
 	let headerResultList = get2dArray(movieID, getHeaderFigs);
   // make movieID and getImgList into 2d array
 	let mainResultList = get2dArray(movieID, getImgList);
+  // make movie and getCardTitle into 2d array
+	let cardTitleList = get2dArray(movieID, getCardTitle);
+
+  // check copyright
+	if (movieID == marvelMovieID) {
+		footerContent.innerHTML = `Copyright &copy; Marvel`;
+	} else {
+		footerContent.innerHTML = `Copyright &copy; DC`;
+	}
+
+	cardTitleList.map( i => {
+		let [ x, y ] = i;
+		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
+		let xhr = new XMLHttpRequest();
+
+		xhr.open('GET', movieUrls, true);
+
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				let movieOutputs = JSON.parse(this.responseText);
+				let getMovieTitle = movieOutputs.title;
+				let hasSemicolon = /:/gi.test(getMovieTitle);
+				if (hasSemicolon) {
+					let titleWithoutSemi = getMovieTitle.replace(/: /gi, `<br>`)
+					y.innerHTML = titleWithoutSemi;
+				} else {
+					y.innerHTML = movieOutputs.title;
+				}
+			}
+		}
+		xhr.send();
+	})
+
 
   // map through all 6 header carousels to get figs
 	headerResultList.map( i => {
@@ -88,6 +132,8 @@ function windowOnLoad() {
 			xhr.send();
 		}
 	);
+
+
 }
 
 // get all details btns
@@ -128,7 +174,6 @@ function checkindex() {
 
 			$select('#movie-rating').innerHTML = output.vote_average;
 			$select('#movie-votes').innerHTML = output.vote_count;
-
 		}
 	}
 	xhr.send();
@@ -137,65 +182,69 @@ function checkindex() {
 
 
 
-// // for testing apikey
-// const btnGetApi = $select('#get-btn');
-// const btnSearchApi = $select('#search-btn');
-// const btnConfig = $select('#config-btn');
-//
-// // $event(btnGetApi, 'click', getApi);
-// // $event(btnSearchApi, 'click', searchApi);
-// // $event(btnConfig, 'click', configApi);
-//
-// function configApi() {
-// 	const xhr = new XMLHttpRequest();
-// 	const secureURL = 'https://api.themoviedb.org/3/';
-// 	const myURL = `${secureURL}configuration?api_key=${myAPI}`;
-//
-// 	xhr.open('GET', myURL, true);
-// 	xhr.onload = function() {
-// 		if (this.status === 200) {
-// 			let output = JSON.parse(this.responseText)
-// 			console.log(output.images);
-// 		}
-// 	}
-//
-// 	xhr.send()
-// }
-//
-// function getApi() {
-// 	let xhr = new XMLHttpRequest();
-// 	let movieID = 284053;
-// 	let secureURL = 'https://api.themoviedb.org/3/';
-// 	let myURL = `${secureURL}movie/${movieID}?api_key=${myAPI}`;
-// 	let imgURL = `https://image.tmdb.org/t/p/`;
-// 	let imgSize = `w342`;
-//
-// 	xhr.open('GET', myURL, true);
-// 	xhr.onload = function() {
-// 		if (this.status === 200) {
-// 			let output = JSON.parse(this.responseText)
-// 			let outputImgURL = `${imgURL}${imgSize}${output.poster_path}`
-// 			console.log(outputImgURL);
-// 		}
-// 	}
-//
-// 	xhr.send()
-// }
-//
-//
-//
-// function searchApi() {
-// 	const xhr = new XMLHttpRequest();
-// 	const secureURL = `https://api.themoviedb.org/3/`
-// 	const myURL = `${secureURL}search/movie?api_key=${myAPI}&query=captain+america`;
-//
-// 	xhr.open('GET', myURL, true);
-// 	xhr.onload = function() {
-// 		if (this.status === 200) {
-// 			let output = JSON.parse(this.responseText)
-// 			console.log(output);
-// 		}
-// 	}
-//
-// 	xhr.send()
-// }
+
+
+
+
+// for testing apikey
+const btnGetApi = $select('#get-btn');
+const btnSearchApi = $select('#search-btn');
+const btnConfig = $select('#config-btn');
+
+$event(btnGetApi, 'click', getApi);
+$event(btnSearchApi, 'click', searchApi);
+$event(btnConfig, 'click', configApi);
+
+function configApi() {
+	const xhr = new XMLHttpRequest();
+	const secureURL = 'https://api.themoviedb.org/3/';
+	const myURL = `${secureURL}configuration?api_key=${myAPI}`;
+
+	xhr.open('GET', myURL, true);
+	xhr.onload = function() {
+		if (this.status === 200) {
+			let output = JSON.parse(this.responseText)
+			console.log(output.images);
+		}
+	}
+
+	xhr.send()
+}
+
+function getApi() {
+	let xhr = new XMLHttpRequest();
+	let movieID = 284053;
+	let secureURL = 'https://api.themoviedb.org/3/';
+	let myURL = `${secureURL}movie/${movieID}?api_key=${myAPI}`;
+	let imgURL = `https://image.tmdb.org/t/p/`;
+	let imgSize = `w342`;
+
+	xhr.open('GET', myURL, true);
+	xhr.onload = function() {
+		if (this.status === 200) {
+			let output = JSON.parse(this.responseText)
+			let outputImgURL = `${imgURL}${imgSize}${output.poster_path}`
+			console.log(outputImgURL);
+		}
+	}
+
+	xhr.send()
+}
+
+
+
+function searchApi() {
+	const xhr = new XMLHttpRequest();
+	const secureURL = `https://api.themoviedb.org/3/`
+	const myURL = `${secureURL}search/movie?api_key=${myAPI}&query=${wordtosearch}`;
+
+	xhr.open('GET', myURL, true);
+	xhr.onload = function() {
+		if (this.status === 200) {
+			let output = JSON.parse(this.responseText)
+			console.log(output);
+		}
+	}
+
+	xhr.send()
+}

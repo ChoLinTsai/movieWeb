@@ -110,7 +110,6 @@
 						div.card {
 							margin: 0;
 							img.card-img {
-								@include wh(normal, 35%, 100%);
 							}
 							div.inner-wrap {
 								@include wh(normal, 65%, 100%);

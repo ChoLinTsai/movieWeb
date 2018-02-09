@@ -26,8 +26,6 @@ function get2dArray(x, y) {
 	return resultArray;
 }
 
-const wordtosearch = `steel`;
-
 // array 0:avengers, 1:blackpather, 2:thor3
 // 3:doctor strange, 4:spiderman, 5:captain america
 const marvelMovieID = [299536, 284054, 284053, 284052, 315635, 271110];
@@ -49,17 +47,29 @@ $event(window, 'DOMContentLoaded', windowOnLoad, false)
 
 // when this function is called, it will get header and main section figs
 function windowOnLoad() {
-	// get .card-img elements and put them into array;
+	// get elements and put them into array;
 	let getImgList = [...$selectAll('.card-img')];
 	let getHeaderFigs = [...$selectAll('.header-figs')];
   // get card title and put them into array
 	let getCardTitle = [...$selectAll('.card-title')]
+  // get card description and array them
+	let getCardDesc = [...$selectAll('.card-desc')];
   // make movieID and getHeaderFigs into 2d array
 	let headerResultList = get2dArray(movieID, getHeaderFigs);
   // make movieID and getImgList into 2d array
 	let mainResultList = get2dArray(movieID, getImgList);
-  // make movie and getCardTitle into 2d array
-	let cardTitleList = get2dArray(movieID, getCardTitle);
+  // make movieID, title, desc into 2d array
+	let cardContentList = make2dAryWith3eles(movieID, getCardTitle, getCardDesc);
+
+  // make 2d array with 3 elements
+	function make2dAryWith3eles(x, y, z) {
+		let resultArray = [];
+		for (let i = 0; i < x.length; i++) {
+			resultArray.push( [ x[i], y[i], z[i] ]);
+		}
+		return resultArray;
+	}
+
 
   // check copyright
 	if (movieID == marvelMovieID) {
@@ -68,8 +78,9 @@ function windowOnLoad() {
 		footerContent.innerHTML = `Copyright &copy; DC`;
 	}
 
-	cardTitleList.map( i => {
-		let [ x, y ] = i;
+  // map through movieID and make title into 2 lines if there is a semicolon
+	cardContentList.map( i => {
+		let [ x, y, z ] = i;
 		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 		let xhr = new XMLHttpRequest();
 
@@ -79,12 +90,13 @@ function windowOnLoad() {
 			if (xhr.status === 200) {
 				let movieOutputs = JSON.parse(this.responseText);
 				let getMovieTitle = movieOutputs.title;
+				let [ title, desc ] = getMovieTitle.split(': ')
 				let hasSemicolon = /:/gi.test(getMovieTitle);
 				if (hasSemicolon) {
-					let titleWithoutSemi = getMovieTitle.replace(/: /gi, `<br>`)
-					y.innerHTML = titleWithoutSemi;
+					y.innerHTML = title;
+					z.innerHTML = desc;
 				} else {
-					y.innerHTML = movieOutputs.title;
+					y.innerHTML = getMovieTitle;
 				}
 			}
 		}
@@ -133,13 +145,81 @@ function windowOnLoad() {
 		}
 	);
 
-
 }
+// function windowOnLoad ends here
+
+
+
+
+
+// get input element
+const getInput = $select('#movie-search');
+// get search result content
+const resultContent = $select('#resultContent');
+
+// keyup event to call movieSearch function
+$event(getInput, 'keyup', movieSearch);
+
+
+// get input value to search movie title
+function movieSearch(e) {
+	let resultContent = $select('#resultContent');
+	let inputValue = e.target.value;
+	let xhr = new XMLHttpRequest();
+	let secureUrl = `https://api.themoviedb.org/3/`;
+	let myUrl = `${secureUrl}search/movie?api_key=${myAPI}&query=${inputValue}`;
+
+	if (inputValue === '' || inputValue === ' ') {
+		return
+	}
+
+	let searchUrl = myUrl;
+
+	xhr.open('GET', searchUrl, true);
+
+	xhr.onload = () => {
+
+		if (xhr.status === 200) {
+			let searchOutput = JSON.parse(xhr.responseText);
+			let arrayResult = [];
+			let resultToHtml = searchOutput.results.slice(0,10).map( i => {
+				arrayResult.push(i);
+				return `<li class="resultTitle">${i.title}</li>`;
+			}).join('');
+			resultContent.innerHTML = resultToHtml;
+
+			let isClicked = false;
+
+			let resultTitle = [...$selectAll('.resultTitle')];
+
+			resultTitle.map( i => $event(i, 'click', () => {
+						$log(resultTitle.indexOf(i))
+					}
+				)
+			)
+
+			// input focusout to remove resultContent
+			$event(window, 'click', () => {
+				let isInputFocus = (document.activeElement === getInput);
+
+				if (isInputFocus) {
+					return
+				}
+				resultContent.innerHTML = '';
+				// $log(`is input focus: ${isInputFocus}`);
+				// $log(`is result title focus: ${isResultTitleFocus}`);
+			})
+
+		}
+	}
+
+	xhr.send();
+}
+// search movie function ends here
 
 // get all details btns
 const detailsBtns = [...$selectAll('.btn-details')];
 const modalPosterSize = 'w185';
-
 // set function click
 detailsBtns.map( i => $event(i, 'click', checkindex))
 
@@ -178,8 +258,6 @@ function checkindex() {
 	}
 	xhr.send();
 }
-
-
 
 
 

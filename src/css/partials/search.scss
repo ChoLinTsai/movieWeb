@@ -1,6 +1,6 @@
 section#search-result {
 	margin-top: 0.5rem;
-	@include wh(normal, 100vw, 100%);
+	width: 100vw;
 	position: absolute;
 	z-index: 1;
 	div.container {
@@ -15,7 +15,11 @@ section#search-result {
 					background: #FCF9F9;
 					padding: 0.5rem;
 					color: #333;
-					border: 0.5px solid #333;
+					border-bottom: 0.5px solid #333;
+					&:hover {
+						background: #E0FCFF;
+						cursor: pointer;
+					}
 				}
 			}
 		}

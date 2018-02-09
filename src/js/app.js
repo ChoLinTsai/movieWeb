@@ -148,11 +148,18 @@ function windowOnLoad() {
 }
 // function windowOnLoad ends here
 
-// get input
+
+
+
+
+// get input element
 const getInput = $select('#movie-search');
+// get search result content
+const resultContent = $select('#resultContent');
 
 // keyup event to call movieSearch function
 $event(getInput, 'keyup', movieSearch);
+
 
 // get input value to search movie title
 function movieSearch(e) {
@@ -171,27 +178,48 @@ function movieSearch(e) {
 	xhr.open('GET', searchUrl, true);
 
 	xhr.onload = () => {
+
 		if (xhr.status === 200) {
 			let searchOutput = JSON.parse(xhr.responseText);
-
-			let toHtml = searchOutput.results.slice(0,10).map( i => {
+			let arrayResult = [];
+			let resultToHtml = searchOutput.results.slice(0,10).map( i => {
+				arrayResult.push(i);
 				return `<li class="resultTitle">${i.title}</li>`;
 			}).join('');
+			resultContent.innerHTML = resultToHtml;
 
-			resultContent.innerHTML = toHtml;
+			let isClicked = false;
+
+			let resultTitle = [...$selectAll('.resultTitle')];
+
+			resultTitle.map( i => $event(i, 'click', () => {
+						$log(resultTitle.indexOf(i))
+					}
+				)
+			)
+
+			// input focusout to remove resultContent
+			$event(window, 'click', () => {
+				let isInputFocus = (document.activeElement === getInput);
+
+				if (isInputFocus) {
+					return
+				}
+				resultContent.innerHTML = '';
+				// $log(`is input focus: ${isInputFocus}`);
+				// $log(`is result title focus: ${isResultTitleFocus}`);
+			})
+
 		}
 	}
 
 	xhr.send();
 }
-
-
-
+// search movie function ends here
 
 // get all details btns
 const detailsBtns = [...$selectAll('.btn-details')];
 const modalPosterSize = 'w185';
-
 // set function click
 detailsBtns.map( i => $event(i, 'click', checkindex))
 

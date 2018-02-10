@@ -90,9 +90,9 @@ function windowOnLoad() {
 			if (xhr.status === 200) {
 				let movieOutputs = JSON.parse(this.responseText);
 				let getMovieTitle = movieOutputs.title;
-				let [ title, desc ] = getMovieTitle.split(': ')
 				let hasSemicolon = /:/gi.test(getMovieTitle);
 				if (hasSemicolon) {
+					let [ title, desc ] = getMovieTitle.split(': ')
 					y.innerHTML = title;
 					z.innerHTML = desc;
 				} else {
@@ -140,16 +140,12 @@ function windowOnLoad() {
 					y.src = getMovieUrls;
 				}
 			}
-
 			xhr.send();
 		}
 	);
 
 }
 // function windowOnLoad ends here
-
-
-
 
 
 // get input element
@@ -184,16 +180,60 @@ function movieSearch(e) {
 			let arrayResult = [];
 			let resultToHtml = searchOutput.results.slice(0,10).map( i => {
 				arrayResult.push(i);
-				return `<li class="resultTitle">${i.title}</li>`;
+				return `
+					<li class="resultTitle" data-toggle="modal" data-target="#movieModal">${i.title}
+					</li>
+				`;
 			}).join('');
 			resultContent.innerHTML = resultToHtml;
 
 			let isClicked = false;
-
 			let resultTitle = [...$selectAll('.resultTitle')];
 
 			resultTitle.map( i => $event(i, 'click', () => {
-						$log(resultTitle.indexOf(i))
+						$select('#movieModalImg').src = '';
+						let movieIndex = resultTitle.indexOf(i);
+						let getMovieID = arrayResult[movieIndex].id;
+						let getMovieUrl = `${secureUrl}movie/${getMovieID}?api_key=${myAPI}`;
+						let xhr = new XMLHttpRequest();
+
+						xhr.open('GET', getMovieUrl, true);
+						xhr.onload = () => {
+							if (xhr.status === 200) {
+								let output = JSON.parse(xhr.responseText);
+								let getPosterPath = output.poster_path;
+								let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
+								let setMillion = 1000000;
+								let setBillion = 1000000000;
+								let budgetDivide = output.budget > setBillion ? setBillion : setMillion;
+								let revenueDivide = output.revenue > setBillion ? setBillion : setMillion;
+								let budgetUnit = output.budget > setBillion ? `Billion(s)` : `Million(s)`
+								let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
+
+								$select('#movieModalImg').src = getModalPoster;
+
+								let hasSemicolon = /:/gi.test(output.original_title);
+								if (hasSemicolon) {
+									let [ title, desc ] = output.original_title.split(': ')
+									$select('#movieModalTitle').innerHTML = title;
+									$select('#movieModalDesc').innerHTML = desc;
+								} else {
+									$select('#movieModalDesc').innerHTML = '';
+									$select('#movieModalTitle').innerHTML = output.original_title;
+								}
+
+								$select('#release-date').innerHTML = output.release_date;
+								$select('#movie-status').innerHTML = output.status;
+
+								$select('#movie-budget').innerHTML = `${(output.budget/budgetDivide).toFixed(2)} ${budgetUnit}`;
+
+								$select('#movie-revenue').innerHTML = `${(output.revenue/revenueDivide).toFixed(2)} ${revenueUnit}`
+
+								$select('#movie-rating').innerHTML = output.vote_average;
+								$select('#movie-votes').innerHTML = output.vote_count;
+							}
+						}
+						xhr.send()
 					}
 				)
 			)
@@ -205,9 +245,8 @@ function movieSearch(e) {
 				if (isInputFocus) {
 					return
 				}
+
 				resultContent.innerHTML = '';
-				// $log(`is input focus: ${isInputFocus}`);
-				// $log(`is result title focus: ${isResultTitleFocus}`);
 			})
 
 		}
@@ -216,6 +255,7 @@ function movieSearch(e) {
 	xhr.send();
 }
 // search movie function ends here
+
 
 // get all details btns
 const detailsBtns = [...$selectAll('.btn-details')];
@@ -244,7 +284,18 @@ function checkindex() {
 			let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
 
 			$select('#movieModalImg').src = getModalPoster;
-			$select('#movieModalTitle').innerHTML = output.original_title;
+
+
+			let hasSemicolon = /:/gi.test(output.original_title);
+			if (hasSemicolon) {
+				let [ title, desc ] = output.original_title.split(': ')
+				$select('#movieModalTitle').innerHTML = title;
+				$select('#movieModalDesc').innerHTML = desc;
+			} else {
+				$select('#movieModalDesc').innerHTML = '';
+				$select('#movieModalTitle').innerHTML = output.original_title;
+			}
+
 			$select('#release-date').innerHTML = output.release_date;
 			$select('#movie-status').innerHTML = output.status;
 
@@ -257,72 +308,4 @@ function checkindex() {
 		}
 	}
 	xhr.send();
-}
-
-
-
-
-
-
-// for testing apikey
-const btnGetApi = $select('#get-btn');
-const btnSearchApi = $select('#search-btn');
-const btnConfig = $select('#config-btn');
-
-$event(btnGetApi, 'click', getApi);
-$event(btnSearchApi, 'click', searchApi);
-$event(btnConfig, 'click', configApi);
-
-function configApi() {
-	const xhr = new XMLHttpRequest();
-	const secureURL = 'https://api.themoviedb.org/3/';
-	const myURL = `${secureURL}configuration?api_key=${myAPI}`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			console.log(output.images);
-		}
-	}
-
-	xhr.send()
-}
-
-function getApi() {
-	let xhr = new XMLHttpRequest();
-	let movieID = 284053;
-	let secureURL = 'https://api.themoviedb.org/3/';
-	let myURL = `${secureURL}movie/${movieID}?api_key=${myAPI}`;
-	let imgURL = `https://image.tmdb.org/t/p/`;
-	let imgSize = `w342`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			let outputImgURL = `${imgURL}${imgSize}${output.poster_path}`
-			console.log(outputImgURL);
-		}
-	}
-
-	xhr.send()
-}
-
-
-
-function searchApi() {
-	const xhr = new XMLHttpRequest();
-	const secureURL = `https://api.themoviedb.org/3/`
-	const myURL = `${secureURL}search/movie?api_key=${myAPI}&query=${wordtosearch}`;
-
-	xhr.open('GET', myURL, true);
-	xhr.onload = function() {
-		if (this.status === 200) {
-			let output = JSON.parse(this.responseText)
-			console.log(output);
-		}
-	}
-
-	xhr.send()
 }

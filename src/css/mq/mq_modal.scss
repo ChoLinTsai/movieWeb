@@ -14,9 +14,15 @@
 		div.modal-dialog {
 			div.modal-content {
 				div.modal-header {
-					h5#movieModalTitle {
-						font-size: 1.75rem;
-						letter-spacing: 0.05rem;
+					div.modal-header-wrapper {
+						h5#movieModalTitle {
+							font-size: 2rem;
+							letter-spacing: 0.1rem;
+						}
+						p#movieModalDesc {
+							font-size: 1.25rem;
+							letter-spacing: 0.1rem;
+						}
 					}
 				}
 				div.modal-body {
@@ -28,7 +34,8 @@
 						img#movieModalImg {
 							@include wh(normal, 185px, 294px);
 							border-radius: 5px;
-							margin-bottom: 1rem;
+							margin-top: 1rem;
+							margin-bottom: 2rem;
 						}
 						div.innerContent {
 							@include wh(normal, 100%, 100%);
@@ -55,9 +62,15 @@
 		div.modal-dialog {
 			div.modal-content {
 				div.modal-header {
-					h5#movieModalTitle {
-						font-size: 1.25rem;
-						letter-spacing: 2px;
+					div.modal-header-wrapper {
+						h5#movieModalTitle {
+							font-size: 2rem;
+							letter-spacing: 0.1rem;
+						}
+						p#movieModalDesc {
+							font-size: 1.25rem;
+							letter-spacing: 0.1rem;
+						}
 					}
 				}
 			}
@@ -71,9 +84,15 @@
 		div.modal-dialog {
 			div.modal-content {
 				div.modal-header {
-					h5#movieModalTitle {
-						font-size: 1.15rem;
-						letter-spacing: 1px;
+					div.modal-header-wrapper {
+						h5#movieModalTitle {
+							font-size: 1.5rem;
+							letter-spacing: 0.1rem;
+						}
+						p#movieModalDesc {
+							font-size: 1rem;
+							letter-spacing: 0.1rem;
+						}
 					}
 				}
 			}
@@ -83,7 +102,24 @@
 
 /* mobile md */
 @media screen and (max-width: 375px) {
-
+	div#movieModal {
+		div.modal-dialog {
+			div.modal-content {
+				div.modal-header {
+					div.modal-header-wrapper {
+						h5#movieModalTitle {
+							font-size: 1.25rem;
+							letter-spacing: 0.05rem;
+						}
+						p#movieModalDesc {
+							font-size: 0.85rem;
+							letter-spacing: 0.05rem;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 /* mobile sm */
@@ -92,9 +128,15 @@
 		div.modal-dialog {
 			div.modal-content {
 				div.modal-header {
-					h5#movieModalTitle {
-						font-size: 0.9rem;
-						letter-spacing: 1px;
+					div.modal-header-wrapper {
+						h5#movieModalTitle {
+							font-size: 1.15rem;
+							letter-spacing: 0.025rem;
+						}
+						p#movieModalDesc {
+							font-size: 0.75rem;
+							letter-spacing: 0.025rem;
+						}
 					}
 				}
 			}

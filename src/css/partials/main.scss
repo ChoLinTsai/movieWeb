@@ -14,8 +14,9 @@ main#main-section {
 						flex-direction: row;
 						display: flex;
 						img.card-img {
-							@include wh(normal, 35%, 100%);
+							@include wh(normal, 185px, 100%);
 							border-radius: 5px;
+							box-shadow: 2px 2px 30px #333;
 						}
 						div.inner-wrap {
 							@include wh(normal, 65%, 100%);

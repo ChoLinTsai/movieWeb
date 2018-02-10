@@ -2,11 +2,19 @@ div#movieModal {
 	div.modal-dialog {
 		div.modal-content {
 			div.modal-header {
-				h5#movieModalTitle {
-					font-size: 2.5rem;
-					text-transform: uppercase;
-					letter-spacing: 0.25rem;
-					font-family: 'exo2-black';
+				div.modal-header-wrapper {
+					h5#movieModalTitle {
+						font-size: 2.5rem;
+						text-transform: uppercase;
+						letter-spacing: 0.25rem;
+						font-family: 'exo2-black';
+					}
+					p#movieModalDesc {
+						font-size: 1.5rem;
+						text-transform: uppercase;
+						letter-spacing: 0.25rem;
+						font-family: 'exo2-black';
+					}
 				}
 			}
 			div.modal-body {
@@ -16,12 +24,12 @@ div#movieModal {
 					img#movieModalImg {
 						@include wh(normal, 185px, 294px);
 						border-radius: 5px;
+						box-shadow: 2px 2px 30px #333;
 					}
 					div.innerContent {
 						flex:3;
 						margin-left: 1rem;
 						table.table {
-
 						}
 					}
 				}

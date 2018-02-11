@@ -1,18 +1,22 @@
 const css = require('../css/app.scss');
 require("font-awesome-sass-loader");
 
+// short for console.log()
 function $log(x) {
 	return console.log(x);
 }
 
+// get a html element
 function $select(x){
 	return document.querySelector(x);
 }
 
+// get html elements
 function $selectAll(x) {
 	return document.querySelectorAll(x);
 }
 
+// short for addEventListener
 function $event(x, y, z, i) {
 	return x.addEventListener(y, z, i);
 }
@@ -80,6 +84,7 @@ function windowOnLoad() {
 
   // map through movieID and make title into 2 lines if there is a semicolon
 	cardContentList.map( i => {
+    // destruct i (contains movieID, getCardTitle and getCardDesc.)
 		let [ x, y, z ] = i;
 		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 		let xhr = new XMLHttpRequest();
@@ -90,6 +95,7 @@ function windowOnLoad() {
 			if (xhr.status === 200) {
 				let movieOutputs = JSON.parse(this.responseText);
 				let getMovieTitle = movieOutputs.title;
+        // check if getMovieTitle has semicolon
 				let hasSemicolon = /:/gi.test(getMovieTitle);
 				if (hasSemicolon) {
 					let [ title, desc ] = getMovieTitle.split(': ')
@@ -106,6 +112,7 @@ function windowOnLoad() {
 
   // map through all 6 header carousels to get figs
 	headerResultList.map( i => {
+    // destruct i (contains movieID, getHeaderFigs)
 		let [ x, y ] = i;
 		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 		let xhr = new XMLHttpRequest();
@@ -126,6 +133,7 @@ function windowOnLoad() {
 
   // get main section 6 poster imgs
 	mainResultList.map( i => {
+      // destruct i (contains movieID, getImgList)
 			let [ x, y ] = i;
 			let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 			let xhr = new XMLHttpRequest();
@@ -165,13 +173,12 @@ function movieSearch(e) {
 	let secureUrl = `https://api.themoviedb.org/3/`;
 	let myUrl = `${secureUrl}search/movie?api_key=${myAPI}&query=${inputValue}`;
 
+  // check input value to return nothing
 	if (inputValue === '' || inputValue === ' ') {
 		return
 	}
 
-	let searchUrl = myUrl;
-
-	xhr.open('GET', searchUrl, true);
+	xhr.open('GET', myUrl, true);
 
 	xhr.onload = () => {
 
@@ -179,20 +186,24 @@ function movieSearch(e) {
 			let searchOutput = JSON.parse(xhr.responseText);
 			let arrayResult = [];
 			let resultToHtml = searchOutput.results.slice(0,10).map( i => {
+        // push search result into array
 				arrayResult.push(i);
 				return `
 					<li class="resultTitle" data-toggle="modal" data-target="#movieModal">${i.title}
 					</li>
 				`;
 			}).join('');
+      // make every search result into li (should be 10 of them)
 			resultContent.innerHTML = resultToHtml;
-
-			let isClicked = false;
+      // get every result li into array
 			let resultTitle = [...$selectAll('.resultTitle')];
-
+      // listen every resylt li on click event
 			resultTitle.map( i => $event(i, 'click', () => {
+            // firstly remove img src
 						$select('#movieModalImg').src = '';
+            // get movieindex baseon which resulttitle we clicked
 						let movieIndex = resultTitle.indexOf(i);
+            // get movieID baseon the movieID we get above
 						let getMovieID = arrayResult[movieIndex].id;
 						let getMovieUrl = `${secureUrl}movie/${getMovieID}?api_key=${myAPI}`;
 						let xhr = new XMLHttpRequest();
@@ -205,13 +216,19 @@ function movieSearch(e) {
 								let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
 								let setMillion = 1000000;
 								let setBillion = 1000000000;
+                // check budget is over Billion or not
 								let budgetDivide = output.budget > setBillion ? setBillion : setMillion;
+								// check revenue is over Billion or not
 								let revenueDivide = output.revenue > setBillion ? setBillion : setMillion;
+                // check budget unit
 								let budgetUnit = output.budget > setBillion ? `Billion(s)` : `Million(s)`
+								// check revenue unit
 								let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
 
+                // get movie poster into img src
 								$select('#movieModalImg').src = getModalPoster;
 
+                // check if has semicolon
 								let hasSemicolon = /:/gi.test(output.original_title);
 								if (hasSemicolon) {
 									let [ title, desc ] = output.original_title.split(': ')
@@ -225,8 +242,9 @@ function movieSearch(e) {
 								$select('#release-date').innerHTML = output.release_date;
 								$select('#movie-status').innerHTML = output.status;
 
+                // make movie budget with 2 digits behide zero
 								$select('#movie-budget').innerHTML = `${(output.budget/budgetDivide).toFixed(2)} ${budgetUnit}`;
-
+								// make movie revenue with 2 digits behide zero
 								$select('#movie-revenue').innerHTML = `${(output.revenue/revenueDivide).toFixed(2)} ${revenueUnit}`
 
 								$select('#movie-rating').innerHTML = output.vote_average;
@@ -273,6 +291,7 @@ function checkindex() {
 	xhr.open('GET', getMovieUrl, true);
 	xhr.onload = () => {
 		if (xhr.status === 200) {
+			$select('#movieModalImg').src = '';
 			let output = JSON.parse(xhr.responseText);
 			let getPosterPath = output.poster_path;
 			let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;

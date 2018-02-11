@@ -54,18 +54,18 @@ function windowOnLoad() {
 	// get elements and put them into array;
 	let getImgList = [...$selectAll('.card-img')];
 	let getHeaderFigs = [...$selectAll('.header-figs')];
-  // get card title and put them into array
+	// get card title and put them into array
 	let getCardTitle = [...$selectAll('.card-title')]
-  // get card description and array them
+	// get card description and array them
 	let getCardDesc = [...$selectAll('.card-desc')];
-  // make movieID and getHeaderFigs into 2d array
+	// make movieID and getHeaderFigs into 2d array
 	let headerResultList = get2dArray(movieID, getHeaderFigs);
-  // make movieID and getImgList into 2d array
+	// make movieID and getImgList into 2d array
 	let mainResultList = get2dArray(movieID, getImgList);
-  // make movieID, title, desc into 2d array
+	// make movieID, title, desc into 2d array
 	let cardContentList = make2dAryWith3eles(movieID, getCardTitle, getCardDesc);
 
-  // make 2d array with 3 elements
+	// make 2d array with 3 elements
 	function make2dAryWith3eles(x, y, z) {
 		let resultArray = [];
 		for (let i = 0; i < x.length; i++) {
@@ -74,8 +74,7 @@ function windowOnLoad() {
 		return resultArray;
 	}
 
-
-  // check copyright
+	// check copyright
 	if (movieID == marvelMovieID) {
 		footerContent.innerHTML = `Copyright &copy; Marvel`;
 	} else {
@@ -84,20 +83,19 @@ function windowOnLoad() {
 
   // map through movieID and make title into 2 lines if there is a semicolon
 	cardContentList.map( i => {
-    // destruct i (contains movieID, getCardTitle and getCardDesc.)
+		// destruct i (x = movieID, y= getCardTitle, z = getCardDesc.)
 		let [ x, y, z ] = i;
 		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 		let xhr = new XMLHttpRequest();
-
 		xhr.open('GET', movieUrls, true);
-
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				let movieOutputs = JSON.parse(this.responseText);
 				let getMovieTitle = movieOutputs.title;
-        // check if getMovieTitle has semicolon
+				// check if getMovieTitle has semicolon
 				let hasSemicolon = /:/gi.test(getMovieTitle);
 				if (hasSemicolon) {
+          // if title has semicolon then split into 2 lets
 					let [ title, desc ] = getMovieTitle.split(': ')
 					y.innerHTML = title;
 					z.innerHTML = desc;
@@ -112,13 +110,11 @@ function windowOnLoad() {
 
   // map through all 6 header carousels to get figs
 	headerResultList.map( i => {
-    // destruct i (contains movieID, getHeaderFigs)
+		// destruct i ( x = movieID, y = getHeaderFigs)
 		let [ x, y ] = i;
 		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
 		let xhr = new XMLHttpRequest();
-
 		xhr.open('GET', movieUrls, true);
-
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				let movieOutputs = JSON.parse(this.responseText);
@@ -126,32 +122,27 @@ function windowOnLoad() {
 				y.style.backgroundImage = `url('${getHeaderPath}')`;
 			}
 		}
-
 		xhr.send()
 	})
 
 
   // get main section 6 poster imgs
 	mainResultList.map( i => {
-      // destruct i (contains movieID, getImgList)
-			let [ x, y ] = i;
-			let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
-			let xhr = new XMLHttpRequest();
-
-			xhr.open('GET', movieUrls, true);
-
-			xhr.onload = function() {
-				if (xhr.status === 200) {
-					let movieOutputs = JSON.parse(this.responseText);
-					let getPath = movieOutputs.poster_path;
-					let getMovieUrls = `${imgUrl}${imgSize}${getPath}`
-					y.src = getMovieUrls;
-				}
+		// destruct i (contains movieID, getImgList)
+		let [ x, y ] = i;
+		let movieUrls = `${secureUrl}movie/${x}?api_key=${myAPI}`;
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', movieUrls, true);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				let movieOutputs = JSON.parse(this.responseText);
+				let getPath = movieOutputs.poster_path;
+				let getMovieUrls = `${imgUrl}${imgSize}${getPath}`
+				y.src = getMovieUrls;
 			}
-			xhr.send();
 		}
-	);
-
+		xhr.send();
+	})
 }
 // function windowOnLoad ends here
 
@@ -167,110 +158,107 @@ $event(getInput, 'keyup', movieSearch);
 
 // get input value to search movie title
 function movieSearch(e) {
-	let resultContent = $select('#resultContent');
-	let inputValue = e.target.value;
-	let xhr = new XMLHttpRequest();
-	let secureUrl = `https://api.themoviedb.org/3/`;
-	let myUrl = `${secureUrl}search/movie?api_key=${myAPI}&query=${inputValue}`;
+		let resultContent = $select('#resultContent');
+		let inputValue = e.target.value;
+		let xhr = new XMLHttpRequest();
+		let secureUrl = `https://api.themoviedb.org/3/`;
+		let myUrl = `${secureUrl}search/movie?api_key=${myAPI}&query=${inputValue}`;
 
-  // check input value to return nothing
-	if (inputValue === '' || inputValue === ' ') {
-		return
-	}
-
-	xhr.open('GET', myUrl, true);
-
-	xhr.onload = () => {
-
-		if (xhr.status === 200) {
-			let searchOutput = JSON.parse(xhr.responseText);
-			let arrayResult = [];
-			let resultToHtml = searchOutput.results.slice(0,10).map( i => {
-        // push search result into array
-				arrayResult.push(i);
-				return `
-					<li class="resultTitle" data-toggle="modal" data-target="#movieModal">${i.title}
-					</li>
-				`;
-			}).join('');
-      // make every search result into li (should be 10 of them)
-			resultContent.innerHTML = resultToHtml;
-      // get every result li into array
-			let resultTitle = [...$selectAll('.resultTitle')];
-      // listen every resylt li on click event
-			resultTitle.map( i => $event(i, 'click', () => {
-            // firstly remove img src
-						$select('#movieModalImg').src = '';
-            // get movieindex baseon which resulttitle we clicked
-						let movieIndex = resultTitle.indexOf(i);
-            // get movieID baseon the movieID we get above
-						let getMovieID = arrayResult[movieIndex].id;
-						let getMovieUrl = `${secureUrl}movie/${getMovieID}?api_key=${myAPI}`;
-						let xhr = new XMLHttpRequest();
-
-						xhr.open('GET', getMovieUrl, true);
-						xhr.onload = () => {
-							if (xhr.status === 200) {
-								let output = JSON.parse(xhr.responseText);
-								let getPosterPath = output.poster_path;
-								let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
-								let setMillion = 1000000;
-								let setBillion = 1000000000;
-                // check budget is over Billion or not
-								let budgetDivide = output.budget > setBillion ? setBillion : setMillion;
-								// check revenue is over Billion or not
-								let revenueDivide = output.revenue > setBillion ? setBillion : setMillion;
-                // check budget unit
-								let budgetUnit = output.budget > setBillion ? `Billion(s)` : `Million(s)`
-								// check revenue unit
-								let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
-
-                // get movie poster into img src
-								$select('#movieModalImg').src = getModalPoster;
-
-                // check if has semicolon
-								let hasSemicolon = /:/gi.test(output.original_title);
-								if (hasSemicolon) {
-									let [ title, desc ] = output.original_title.split(': ')
-									$select('#movieModalTitle').innerHTML = title;
-									$select('#movieModalDesc').innerHTML = desc;
-								} else {
-									$select('#movieModalDesc').innerHTML = '';
-									$select('#movieModalTitle').innerHTML = output.original_title;
-								}
-
-								$select('#release-date').innerHTML = output.release_date;
-								$select('#movie-status').innerHTML = output.status;
-
-                // make movie budget with 2 digits behide zero
-								$select('#movie-budget').innerHTML = `${(output.budget/budgetDivide).toFixed(2)} ${budgetUnit}`;
-								// make movie revenue with 2 digits behide zero
-								$select('#movie-revenue').innerHTML = `${(output.revenue/revenueDivide).toFixed(2)} ${revenueUnit}`
-
-								$select('#movie-rating').innerHTML = output.vote_average;
-								$select('#movie-votes').innerHTML = output.vote_count;
-							}
-						}
-						xhr.send()
-					}
-				)
-			)
-
-			// input focusout to remove resultContent
-			$event(window, 'click', () => {
-				let isInputFocus = (document.activeElement === getInput);
-
-				if (isInputFocus) {
-					return
-				}
-
-				resultContent.innerHTML = '';
-			})
-
+		// check input value to return nothing
+		if (inputValue === '' || inputValue === ' ') {
+			return
 		}
-	}
 
-	xhr.send();
+		xhr.open('GET', myUrl, true);
+
+		xhr.onload = () => {
+			if (xhr.status === 200) {
+				let searchOutput = JSON.parse(xhr.responseText);
+				let arrayResult = [];
+				let resultToHtml = searchOutput.results.slice(0,10).map( i => {
+					// push search result into array
+					arrayResult.push(i);
+					return `
+						<li class="resultTitle" data-toggle="modal"
+						data-target="#movieModal">${i.title}
+						</li>`;
+				}).join('');
+
+				// make every search result into li (should be 10 of them)
+				resultContent.innerHTML = resultToHtml;
+				// get every result li into array
+				let resultTitle = [...$selectAll('.resultTitle')];
+				// listen every resylt li on click event
+				resultTitle.map( i => $event(i, 'click', () => {
+					// firstly remove img src
+					$select('#movieModalImg').src = '';
+					// get movieindex baseon which resulttitle we clicked
+					let movieIndex = resultTitle.indexOf(i);
+					// get movieID baseon the movieID we get above
+					let getMovieID = arrayResult[movieIndex].id;
+					let getMovieUrl = `${secureUrl}movie/${getMovieID}?api_key=${myAPI}`;
+					let xhr = new XMLHttpRequest();
+
+					xhr.open('GET', getMovieUrl, true);
+					xhr.onload = () => {
+						if (xhr.status === 200) {
+							let output = JSON.parse(xhr.responseText);
+							let getPosterPath = output.poster_path;
+							let getModalPoster = `${imgUrl}${modalPosterSize}${getPosterPath}`;
+							let setMillion = 1000000;
+							let setBillion = 1000000000;
+							// check budget is over Billion or not
+							let budgetDivide = output.budget > setBillion ? setBillion : setMillion;
+							// check revenue is over Billion or not
+							let revenueDivide = output.revenue > setBillion ? setBillion : setMillion;
+							// check budget unit
+							let budgetUnit = output.budget > setBillion ? `Billion(s)` : `Million(s)`
+							// check revenue unit
+							let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
+							// get movie poster into img src
+							$select('#movieModalImg').src = getModalPoster;
+							// check if has semicolon
+							let hasSemicolon = /:/gi.test(output.original_title);
+							if (hasSemicolon) {
+								let [ title, desc ] = output.original_title.split(': ')
+								$select('#movieModalTitle').innerHTML = title;
+								$select('#movieModalDesc').innerHTML = desc;
+							} else {
+								$select('#movieModalDesc').innerHTML = '';
+								$select('#movieModalTitle').innerHTML = output.original_title;
+							}
+
+							$select('#release-date').innerHTML = output.release_date;
+							$select('#movie-status').innerHTML = output.status;
+
+							// make movie budget with 2 digits behide zero
+							$select('#movie-budget').innerHTML = `${(output.budget/budgetDivide).toFixed(2)} ${budgetUnit}`;
+							// make movie revenue with 2 digits behide zero
+							$select('#movie-revenue').innerHTML = `${(output.revenue/revenueDivide).toFixed(2)} ${revenueUnit}`
+
+							$select('#movie-rating').innerHTML = output.vote_average;
+							$select('#movie-votes').innerHTML = output.vote_count;
+						}
+					}
+					xhr.send()
+				}
+					)
+				)
+
+				// input focusout to remove resultContent
+				$event(window, 'click', () => {
+					let isInputFocus = (document.activeElement === getInput);
+
+					if (isInputFocus) {
+						return
+					}
+
+					resultContent.innerHTML = '';
+				})
+			}
+		}
+
+		xhr.send();
 }
 // search movie function ends here
 

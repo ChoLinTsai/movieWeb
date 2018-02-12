@@ -81,7 +81,7 @@ function windowOnLoad() {
 		footerContent.innerHTML = `Copyright &copy; DC`;
 	}
 
-  // map through movieID and make title into 2 lines if there is a semicolon
+	// map through movieID and make title into 2 lines if there is a semicolon
 	cardContentList.map( i => {
 		// destruct i (x = movieID, y= getCardTitle, z = getCardDesc.)
 		let [ x, y, z ] = i;
@@ -95,7 +95,7 @@ function windowOnLoad() {
 				// check if getMovieTitle has semicolon
 				let hasSemicolon = /:/gi.test(getMovieTitle);
 				if (hasSemicolon) {
-          // if title has semicolon then split into 2 lets
+					// if title has semicolon then split into 2 lets
 					let [ title, desc ] = getMovieTitle.split(': ')
 					y.innerHTML = title;
 					z.innerHTML = desc;
@@ -108,7 +108,7 @@ function windowOnLoad() {
 	})
 
 
-  // map through all 6 header carousels to get figs
+	// map through all 6 header carousels to get figs
 	headerResultList.map( i => {
 		// destruct i ( x = movieID, y = getHeaderFigs)
 		let [ x, y ] = i;
@@ -126,7 +126,7 @@ function windowOnLoad() {
 	})
 
 
-  // get main section 6 poster imgs
+	// get main section 6 poster imgs
 	mainResultList.map( i => {
 		// destruct i (contains movieID, getImgList)
 		let [ x, y ] = i;
@@ -175,6 +175,8 @@ function movieSearch(e) {
 			if (xhr.status === 200) {
 				let searchOutput = JSON.parse(xhr.responseText);
 				let arrayResult = [];
+				// get every result li into array
+				let resultTitle = [...$selectAll('.resultTitle')];
 				let resultToHtml = searchOutput.results.slice(0,10).map( i => {
 					// push search result into array
 					arrayResult.push(i);
@@ -183,11 +185,9 @@ function movieSearch(e) {
 						data-target="#movieModal">${i.title}
 						</li>`;
 				}).join('');
-
 				// make every search result into li (should be 10 of them)
 				resultContent.innerHTML = resultToHtml;
-				// get every result li into array
-				let resultTitle = [...$selectAll('.resultTitle')];
+
 				// listen every resylt li on click event
 				resultTitle.map( i => $event(i, 'click', () => {
 					// firstly remove img src
@@ -291,7 +291,6 @@ function checkindex() {
 			let revenueUnit = output.revenue > setBillion ? `Billion(s)` : `Million(s)`;
 
 			$select('#movieModalImg').src = getModalPoster;
-
 
 			let hasSemicolon = /:/gi.test(output.original_title);
 			if (hasSemicolon) {

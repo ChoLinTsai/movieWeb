@@ -155,7 +155,7 @@ module.exports = {
 		// new webpack.HotModuleReplacementPlugin(),
 		// new webpack.NamedModulesPlugin(),
 		new HtmlWebpackPlugin({
-			title: 'Webpack Template',
+			title: 'Movie Web',
 			template: './src/index.html',
 			hash: false,
 			minify: {

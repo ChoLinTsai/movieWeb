@@ -190,9 +190,9 @@ function movieSearch(e) {
   xhr.onload = () => {
     if (xhr.status === 200) {
       let searchOutput = JSON.parse(xhr.responseText);
-      let arrayResult = [];
       // get every result li into array
       let resultTitle = [...$selectAll('.resultTitle')];
+      let arrayResult = [];
       let resultToHtml = searchOutput.results.slice(0, 10).map(i => {
         // push search result into array
         arrayResult.push(i);

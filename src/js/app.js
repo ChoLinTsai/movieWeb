@@ -190,8 +190,6 @@ function movieSearch(e) {
   xhr.onload = () => {
     if (xhr.status === 200) {
       let searchOutput = JSON.parse(xhr.responseText);
-      // get every result li into array
-      let resultTitle = [...$selectAll('.resultTitle')];
       let arrayResult = [];
       let resultToHtml = searchOutput.results.slice(0, 10).map(i => {
         // push search result into array
@@ -204,6 +202,8 @@ function movieSearch(e) {
       // make every search result into li (should be 10 of them)
       resultContent.innerHTML = resultToHtml;
 
+      // get every result li into array
+      let resultTitle = [...$selectAll('.resultTitle')];
       // listen every resylt li on click event
       resultTitle.map(i => $event(i, 'click', () => {
         // firstly remove img src
@@ -217,6 +217,7 @@ function movieSearch(e) {
 
         xhr.open('GET', getMovieUrl, true);
         xhr.onload = () => {
+
           if (xhr.status === 200) {
             let output = JSON.parse(xhr.responseText);
             let getPosterPath = output.poster_path;

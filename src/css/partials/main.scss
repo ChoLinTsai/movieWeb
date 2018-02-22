@@ -1,42 +1,52 @@
 main#main-section {
 	background: #333;
+
 	div.container {
 		div.row {
 			section.card-deck {
 				margin-top: 1rem;
 				@include wh(normal, 100%, 100%);
+
 				div {
 					margin-bottom: 1rem;
+
 					div.card {
 						background: #FDFDFD;
 						padding: 1rem;
 						@include wh(normal, 100%, 325px);
 						flex-direction: row;
 						display: flex;
+
 						img.card-img {
 							@include wh(normal, 185px, 100%);
 							border-radius: 5px;
 							box-shadow: 2px 2px 30px #333;
 						}
+
 						div.inner-wrap {
 							@include wh(normal, 65%, 100%);
 							margin: 0;
 							display: flex;
 							flex-direction: column;
 							align-items: center;
+
 							div.card-body {
 								text-align: center;
 								@include wh(normal, 100%, 100%);
+
 								h5 {
 									font-size: 1.85rem;
 								}
+
 								p {
 									font-size: 1.3rem;
 								}
 							}
+
 							div.card-footer {
 								margin: 0;
 								padding: 0;
+
 								button {
 									letter-spacing: 1px;
 									border: 0;

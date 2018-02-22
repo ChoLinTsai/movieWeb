@@ -1,12 +1,10 @@
 /* laptop xl or desktop */
-@media screen and (max-width: 1440px) {
-
-}
-
+@media screen and (max-width: 1440px) {}
 /* laptop lg */
 @media screen and (max-width: 1200px) {
 	header#header-carousel {
 		@include wh(normal,$headerWidth-lg,$headerHeight-lg);
+
 		div.carousel-inner {
 			figure.header-figs {
 				@include wh(normal,$headerWidth-lg,$headerHeight-lg);
@@ -14,11 +12,11 @@
 		}
 	}
 }
-
 /* laptop md */
 @media screen and (max-width: 992px) {
 	header#header-carousel {
 		@include wh(normal,$headerWidth-md,$headerHeight-md);
+
 		div.carousel-inner {
 			figure.header-figs {
 				@include wh(normal,$headerWidth-md,$headerHeight-md);
@@ -26,11 +24,11 @@
 		}
 	}
 }
-
 /* tablet */
 @media screen and (max-width: 768px) {
 	header#header-carousel {
 		@include wh(normal,$headerWidth-tablet,$headerHeight-tablet);
+
 		div.carousel-inner {
 			figure.header-figs {
 				@include wh(normal,$headerWidth-tablet,$headerHeight-tablet);
@@ -38,11 +36,11 @@
 		}
 	}
 }
-
 /* mobile lg */
 @media screen and (max-width: 576px) {
 	header#header-carousel {
 		@include wh(normal,$headerWidth-sm,$headerHeight-sm);
+
 		div.carousel-inner {
 			figure.header-figs {
 				@include wh(normal,$headerWidth-sm,$headerHeight-sm);
@@ -50,11 +48,11 @@
 		}
 	}
 }
-
 /* mobile md */
 @media screen and (max-width: 375px) {
 	header#header-carousel {
 		@include wh(normal,$headerWidth-xs,$headerHeight-xs);
+
 		div.carousel-inner {
 			figure.header-figs {
 				@include wh(normal,$headerWidth-xs,$headerHeight-xs);
@@ -62,8 +60,5 @@
 		}
 	}
 }
-
 /* mobile sm */
-@media screen and (max-width: 320px) {
-
-}
+@media screen and (max-width: 320px) {}

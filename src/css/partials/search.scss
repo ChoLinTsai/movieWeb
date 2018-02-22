@@ -3,12 +3,15 @@ section#search-result {
 	width: 100vw;
 	position: absolute;
 	z-index: 1;
+
 	div.container {
 		div.wrap {
 			border-radius: 5px;
+
 			ul#resultContent {
 				padding: 0;
 				margin: 0;
+
 				li.resultTitle {
 					@include wh(normal, 100%, 100%);
 					list-style: none;
@@ -16,6 +19,7 @@ section#search-result {
 					padding: 0.5rem;
 					color: #333;
 					border-bottom: 0.5px solid #333;
+
 					&:hover {
 						background: #E0FCFF;
 						cursor: pointer;

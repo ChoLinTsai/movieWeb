@@ -2,23 +2,16 @@
 @import "./partials/resources/root.scss";
 @import "./partials/resources/fonts.scss";
 @import "./partials/resources/var.scss";
-
-
-
 /* Header section */
 @import "./partials/header.scss";
 @import "./mq/mq_header.scss";
-
 /* Search section */
 @import "./partials/search.scss";
-
 /* Main section */
 @import "./partials/main.scss";
 @import "./mq/mq_main.scss";
-
 /* Modal section */
 @import "./partials/modal.scss";
 @import "./mq/mq_modal.scss";
-
 /* Footer section */
 @import "./partials/footer.scss";

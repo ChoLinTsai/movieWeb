@@ -9,6 +9,7 @@ div#movieModal {
 						letter-spacing: 0.25rem;
 						font-family: 'exo2-black';
 					}
+
 					p#movieModalDesc {
 						font-size: 1.5rem;
 						text-transform: uppercase;
@@ -17,20 +18,23 @@ div#movieModal {
 					}
 				}
 			}
+
 			div.modal-body {
 				div.modalInnerWrap {
 					display: flex;
 					font-size: 1rem;
+
 					img#movieModalImg {
 						@include wh(normal, 185px, 294px);
 						border-radius: 5px;
 						box-shadow: 2px 2px 30px #333;
 					}
+
 					div.innerContent {
-						flex:3;
+						flex: 3;
 						margin-left: 1rem;
-						table.table {
-						}
+
+						table.table {}
 					}
 				}
 			}

@@ -2,6 +2,7 @@ header#header-carousel {
 	@include wh(normal, $headerWidth-xl, $headerHeight-xl);
 	background: #333;
 	color: #fff;
+
 	div.carousel-inner {
 		figure.header-figs {
 			@include wh(normal, $headerWidth-xl, $headerHeight-xl);

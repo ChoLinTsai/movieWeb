@@ -1,15 +1,5 @@
-HTML  
-CSS  
-Sass  
-Boostrap3  
-Purifycss  
-Javascript  
-jQuery
-Babel-env  
-Webpack-dev-server  
-Rimraf  
-File-loader  
-Image-webpack-loader  
+## 2018/3/2
 
-Optional:  
-Hot Module Replacement  
+This project is focus on Ajax practice to get third party api,
+
+and a little bootstrap.
